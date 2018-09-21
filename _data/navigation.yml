@@ -1,8 +1,8 @@
 # main links
 main:
-  - title: "javascript"
-    url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+  - title: "JS"
+    url: /javascript/
   - title: "study"
-    url: https://mmistakes.github.io/minimal-mistakes/about/
+    url: /study/
   - title: "Algorithm"
     url: /year-archive/
