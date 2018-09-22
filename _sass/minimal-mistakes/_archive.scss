@@ -34,7 +34,13 @@
   line-height: initial;
   overflow: hidden;
   text-overflow: ellipsis;
-
+  a{
+    display: block;
+    padding: 10px 20px;
+  }
+  a:hover{
+    border-bottom: 1px solid #eee;
+  }
   a + a {
     opacity: 0.5;
   }
