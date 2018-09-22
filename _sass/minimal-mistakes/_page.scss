@@ -14,9 +14,9 @@
   display: flex;
   display: -webkit-flex;
 
-  @include breakpoint($x-large) {
-    max-width: $x-large;
-  }
+  // @include breakpoint($x-large) {
+  //   max-width: $x-large;
+  // }
 }
 
 .page {

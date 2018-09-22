@@ -25,9 +25,9 @@
     justify-content: space-between;
     font-family: $sans-serif-narrow;
 
-    @include breakpoint($x-large) {
-      max-width: $x-large;
-    }
+    // @include breakpoint($x-large) {
+    //   max-width: $x-large;
+    // }
 
     nav {
       z-index: 10;
