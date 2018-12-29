@@ -14,10 +14,12 @@ a.post-link h3.h1.post-title{
     font-family: sans-serif;
     font-weight: 400;
 }
-.site-nav a:hover{
-    border-bottom: 2px solid $main-color;
+.site-nav a{
     font-family: sans-serif;
     font-weight: 400;
+}
+.site-nav a:hover{
+    border-bottom: 2px solid $main-color;
 }
 span.post-summary{
     display: none;
