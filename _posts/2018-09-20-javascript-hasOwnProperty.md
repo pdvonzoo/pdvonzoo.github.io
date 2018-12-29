@@ -1,4 +1,3 @@
-<h1>hasOwnProperty</h1>
 <h2>prototype chain</h2>
 <p>javascript는 고전적인 상속모델이 없다. 다만 prototype을 사용한다.</p>
 <p>javascript 상속은 프로토타입 체인을 사용한다는 것이다. </p>

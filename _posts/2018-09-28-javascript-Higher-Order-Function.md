@@ -1,5 +1,3 @@
-<h1>고차함수</h1>
-
 <h2>Array.prototype.map()</h2>
 <p>The map() method is used to apply a function on every element in an array. A new array is then returned.</p>
 <p>map 메소드는 배열의 모든 인자에 적용되며 새로운 배열을 리턴한다.</p>
