@@ -1,0 +1,21 @@
+a.site-title{
+    font-size: 1.5rem;
+    font-family: sans-serif;
+    font-weight: 400;
+}
+p.post-meta{
+    font-size: 0.8rem;
+    font-style: unset;
+    font-family: sans-serif;
+    font-weight: 400;
+}
+h1.h1.post-title{
+    font-size: 1.2rem;
+    font-family: sans-serif;
+    font-weight: 400;
+}
+.site-nav a:hover{
+    border-bottom: 2px solid $main-color;
+    font-family: sans-serif;
+    font-weight: 400;
+}
