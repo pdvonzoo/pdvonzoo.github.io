@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title></title>
+    <meta name='description' content=''>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        .container { padding:5rem;}
+        .deleteBtn{color:grey;padding-left:1rem;}
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <input type='text' name='addTodo' class='addTodo'><button class='addBtn'>add</button>
+        <ul class='showTodoList'></ul>
+    </div>
+
+    <script>
+        // 하위 모듈
+        class ConsoleLogger {
+            constructor() {
+                this.level = 'level1';
+            }
+            logConsole(data) {
+                console.log(`%c ${data}`, 'background: green; color: white; display: block;');
+            }
+        }
+
+
+        class StorageLogger {
+            constructor(hb                              ) {
+                this.level = 'level2';
+            }
+            saveLocalStorage(data) {
+                const KEY = 'LOGGER';
+                const stored = JSON.parse(localStorage.getItem(KEY));
+                if (stored === null) {
+                    localStorage.setItem(KEY, JSON.stringify([data]));
+                } else {
+                    stored.push(data);
+                    localStorage.setItem(KEY, JSON.stringify(stored));
+                }
+            }
+        }
+
+        class ServerLogger {
+            constructor(){
+                this.name = 'lever3';
+            }
+
+            fetchLogger(data) {
+                fetch('http://localhost:8000/api/v2/logger', {
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify(data) 
+                }).then(response => response.json()).then((result) => console.log(result));
+            }
+        }
+
+        // class Logger {
+        //     constructor() {
+        //         this.consoleLogger = new ConsoleLogger();
+        //         this.storageLogger = new StorageLogger();
+        //         this.serverLogger = new ServerLogger();
+        //     }
+        //     excuteLogger (data) {
+        //         this.consoleLogger.logConsole(data);
+        //         this.storageLogger.saveLocalStorage(data);
+        //         this.serverLogger.fetchLogger(data); 
+        //     }
+        // }
+
+
+        // 메인 모듈
+        // 로깅 기능이 필요하다
+        // delete 기능 추가할 것.
+        // 세가지 로깅 방식을 모두 지원하는 메서드 만들 것.
+        class TodoApp {
+            constructor(/*log*/) {
+                this.todoList = [];
+                this.regEvents();
+                // this.log = log; 
+            }
+
+            addTodo(content) {
+                this.todoList = [...this.todoList, { 'content': content, date: new Date(), status: 'todo' }];
+                // const startLogger = new Logger(); 
+                // startLogger.excuteLogger(data); 
+                // const data = "logTest"
+                // this.log(data); 
+                return this;
+            }
+
+            deleteTodo(goodByeItem) {
+                this.todoList = this.todoList.filter( o => o.content !== goodByeItem);
+                
+                return this;
+            }
+
+            regEvents() {
+                const addBtn = document.querySelector('.addBtn');
+                const todoListView = document.querySelector('.showTodoList');
+                let deleteBtn;
+                
+                addBtn.addEventListener('click', (e) => {
+                   const content = document.querySelector('input[name="addTodo"]').value;;
+                   if(content) { 
+                       this.addTodo(content);
+                       todoListView.insertAdjacentHTML('beforeend',  `<li>${content} <span class="deleteBtn">X</span></li>`);
+                   }
+                //    deleteBtn = document.querySelectorAll('.deleteBtn');
+                //    deleteBtn.forEach(v => {
+                //         v.addEventListener('click', (value) => {
+                //             let target = v.parentElement.innerText.split(" ")[0];
+                //             this.deleteTodo(target);
+                //             v.parentElement.remove();
+                //         })
+                //     })
+                })
+                todoListView.addEventListener('click', e => {
+                    deleteBtn = document.querySelectorAll('.deleteBtn');
+                    if(e.target.innerHTML === 'X'){
+                        e.target.parentNode.remove();
+                    }
+                })
+                
+            }
+        }
+
+        // const log = new ConsoleLogger(); 
+        const todo = new TodoApp(log);
+        
+    </script>
+</body>
+
+</html>
