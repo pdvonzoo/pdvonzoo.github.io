@@ -1056,3 +1056,250 @@ If-Range: Wed, 21 Oct 2015 07:28:00 GMT
 - HTTP 리다이렉트는 3xx 상태 코드를 지닌 응답이다. 
 - 리다이렉트 응답을 수신한 브라우저는, 제공된 새로운 URL을 사용하며 그것을 즉시 로드한다. 
 - 대부분의 경우, 리다이렉션은 사용자에게는 보이지 않는데다가, 적은 성능 저하를 일으킨다. 
+- 리다이렉트에는 몇 가지 유형이 있으며 세 가지 카테고리로 나누어진다. 
+
+## 8.1.1 영속적인 리다이렉션
+
+- 이 리다이렉션은 영원히 지속됨을 의미한다. 
+- 원래의 URL이 더 이상 사용되지 않아야 하며 새로운 URL을 더 선호해야 함을 시사한다. 
+- 검색 엔진 로봇은 그들의 인덱스 내에서 리소스에 대한 연관 URL의 갱신을 촉발시킨다. 
+- 301, 308
+
+## 8.1.2 일시적인 리다이렉션
+
+- 때때로 요청된 리소스는 그것의 표준 위치에서 접근할 수 없고 다른 위치에서 접근 가능한 경우가 있다. 
+- 이런 경우 일시적인 리다이렉트가 사용될 수 있다. 
+- 검색 엔진 로봇은 새로운, 일시적인 링크를 기억하지 못한다. 
+- 일시적인 리다이렉션은 일시적인 진행율 페이지를 표시하고자 리소스를 만들고 갱신하며 삭제할 때 사용될 수 있다. 
+- 302, 303, 307
+
+## 8.1.3 특수 리다이렉션
+
+- 이런 보통 리다이렉션과 더불어 특별한 두 가지 리다이렉션이 있다. 
+- 304(수정되지 않음)은 (오래된) 로컬에 캐시된 복사본으로 페이지를 리다이렉트 시키며, 300(다중 선택)은 수동 리다이렉션이다. 
+- 브라우저에 의해 웹 페이지로 표현되는 본문은 가능한 리다이렉션을 나열하며 사용자는 그 중 하나를 선택하기 위해 클릭한다. 
+
+## 8.2 리다이렉션을 명시하는 대체 방법
+
+- HTTP 리다이렉트가 리다이렉션을 정의하는 유일한 방법은 아니다. 
+- 두 개의 다른 방법이 존재한다. 
+- <meta>엘리먼트를 사용하는 HTML 리다이렉션과 DOM을 사용하는 자바스크립트 리다이렉션이 있다. 
+
+## 8.2.1 HTML 리다이렉션
+
+- HTTP 리다이렉트는 리다이렉션을 만드는 방법으로 선호되지는 않지만, 때때로 웹 개발자는 서버에 대한 제어권을 가지고 있지 않거나 그것을 구성할 수 없는 경우가 있다. 
+- 이런 특수한 상황들 때문에, 웹 개발자들은 refresh를 설정하기 위해 페이지의 head내에 meta 엘리먼트와 http-equv 속성으로 HTML 페이지를 만들 수 있다. 
+- 해당 페이지를 디스플레이 할 때, 브라우저는 이 엘리먼트를 발견하고 표시된 페이지로 이동할 것이다. 
+- content 속성은 주어진 URL로 리다이렉트 하기 이전에 브라우저가 얼마만큼 시간(초)을 기다려야 하는지를 나타내는 숫자로 시작된다. 
+- 더 나은 접근성을 위해 항상 0으로 설정해야 한다. 
+- 두 말할 필요없이, 이 메서드는 HTML 페이지(혹은 그와 유사한 무언가)에서만 동작하며 이미지나 다른 어떤 종류의 컨텐츠에 대해서 사용될 수 없다. 
+
+~~~
+<head> 
+  <meta http-equiv="refresh" content="0;URL='http://www.example.com/'" />
+</head>
+~~~
+
+## 8.2.2 자바스크립트 리다이렉션
+
+- 자바스크립트 내에서의 리다이렉션은 window.location 프로퍼티에 값을 설정해서 만들어지며 새로운 페이지가 로드된다. 
+- HTML 리다이렉션처럼, 모든 리소스에서 동작하는 것은 아니며, 명백하게 자바스크립트를 실행한 클라이언트 상에서만 동작한다. 
+- 하지만 다른점은, 예를 들어 어떤 조건이 충족되는 경우에만 리다이렉션을 촉발시킬 수 있다는 점에서 더 많은 가능성을 가지고 있다. 
+
+
+## 8.2.3 우선 순위
+
+1. 페이지가 읽힌 적도 없고 전송된 적도 없는 경우, HTTP 리다이렉트가 항상 먼저 실행된다. 
+2. 어떤 HTTP 리다이렉트도 없는 경우에, HTML 리다이렉트(<meta>)가 실행된다. 
+3. 자바스크립트 리다이렉트는 최후의 수단으로 사용되며, 클라이언트 측에서 자바스크립트를 활성화시킨 경우에만 사용할 수 있다. 
+
+- 가능한 경우, 항상 HTTP 리다이렉트를 사용해야 하며, <meta> 엘리먼트를 사용해서는 안된다. 
+- 만약 개발자가 HTTML 리다이렉트를 변경하고 HTML 리다이렉트를 잊는다면, 리다이렉트는 더 이상 동일한 것이 아니거나, 무한 루프로 종료되거나 다른 악몽이 시작될 수도 있다. 
+
+## 9. HTTP 접근 제어(CORS)
+
+- 처음 전송되는 리소스의 도메인과 다른 도메인으로부터 리소스가 요청될 경우 해당 리소스는 cross-origin HTTP 요청에 의해 요청된다. 
+- 예를 들어, http://domain-a.com으로부터 전송되는 HTML 페이지가 <img> src 속성을 통해 http://domain-b.com/image.jpg를 요청하는 경우가 있다. 
+- 오늘날 많은 웹 페이지들은 CSS 스타일 시트, 이미지, 그리고 스크립트와 같은 리소스들을 각각의 출러로부터 읽어온다. 
+
+- 보안 상의 이유로, 브라우저들은 스크립트 내에서 초기화되는 cross-origin HTTP 요청을 제한한다. 
+- 예를 들면, XMLHttpRequest는 same-origin 정책을 따르기에 XMLHttpRequest를 사용하는 웹 애플리케이션은 자신과 동일한 도메인으로 HTTP 요청을 보내는 것만 가능했다. 
+- 웹 애플리케이션을 개선시키기 위해, 개발자들은 브라우저 벤더사들에겍 XMLHttpRequest가 cross-domain 요청을 할 수 있도록 요청했다. 
+
+- W3C는 새로운 CORS 매커니즘을 권하고 있다. 
+- CORS는 웹 서버에게 보안 cross-domain 데이터 전송을 활성화하는 cross-domain 접근 제어권을 부여한다. 
+- 모던 브라우저들은 cross-origin HTTP 요청의 위험성을 완화시키기 위해 API 컨테이너에서 CORS를 사용한다. 
+
+## 9.1 overview
+
+- CORS 표준은 웹 브라우저가 사용하는 정보를 읽을 수 있도록 허가된 출처 집합을 서버에게 알려주도록 허용하는 HTTP 헤더를 추가함으로써 동작한다. 
+- 추가적으로, 사용자 데이터 상에서 부수 효과를 일으킬 수 있는 HTTP 요청 메서드에 대해(특히, GET 이외의 HTTP 메서드들 혹은 어떤 MIME 타입을 사용하는 POST 사용에 대해), 스펙은 브라우저가 요청을 "preflight"(사전 전달)하도록 강제하는데, 이는 HTTP OPTIONS 요청 메서드를 이용해 서버로부터 지원 중인 메서드들을 내려받은 뒤, 서버에서 "approval"(승인) 시에 실제 HTTP 요청 메서드를 이용해 실제 요청을 전송하는 것을 말한다. 
+- 서버들은 또한 클라이언트에게 (Cookie와 HTTP Authentication 데이터를 포함하는) "credentials"가 요청과 함께 전송되어야 하는지를 알려줄 수도 있다. 
+
+## 9.2 Example of access control scenarios
+
+- CORS의 세가지 예제를 보여줄 것이다. 
+- 모든 예제는 지원되는 모든 브라우저에서 cross-site 요청에 사용 될 수 있는 XMLHttpRequest 객체를 사용한다. 
+
+## 9.2.1 간단한 요청
+
+- 간단한 cross-site 요청은 다음의 조건들에 모두 부합하는 것 중 하나이다. 
+    - 허용된 유일한 메서드들은 다음과 같다
+        - GET
+        - POST
+        - HEAD
+    - 사용자 에이전트에 의해 자동으로 설정되는 헤더(Connection, User-Agent 등)들을 제외하고, 수동 설정이 허용되는 유일한 헤더들은 다음과 같다. 
+        - Accept
+        - Accept-Language
+        - Content-Language
+        - Content-Type
+    - Content-Type 헤더에 대해 허용되는 유일한 값은 다음과 같다
+        - application/x-www-form-urlencoded
+        - multipart/form-data
+        - text/plain
+
+- 이 모든 것들은 웹 컨텐츠가 사전에 발행할 수 있는 cross-site 요청의 동일한 분류이며, 서버가 알맞은 헤더를 전송하지 않을 경우 요청자에게 응답 데이터가 전달되지 않는다. 
+- 그러므로, cross-site 요청 위조를 예방하고 있는 사이트들은 HTTP 접근 제어에서 오는 위협에 대해 두려워할만 한 것이 없다. 
+
+- 예를 들어, http://foo.example 도메인 상의 웹 컨텐츠가 http://bar.other 도메인 상의 컨텐츠를 호출한다고 가정하면, "foo.example"에 배포되는 자바스크립트 내에서는 다음과 같은 분류의 코드가 사용될 수 있다. 
+
+~~~
+var invocation = new XMLHttpRequest();
+var url = 'http://bar.other/resources/public-date/';
+
+function callOtherDomain() {
+    if(invocation){
+        invocation.open('GET', url, true);
+        invocation.onreadystatechange = handler;
+        invocation.send();
+    }
+}
+~~~
+
+- 이런 경우 브라우저가 서버에 전송하게 될 내용, 그리고 서버가 응답하는 방식은 다음과 같다. 
+
+~~~
+// request
+GET /resources/public-data/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv: 1. 9.1b3pre) Gecko/20081130 Minfield/3.1b3pre
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us, en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1, utf-8;q=0.7, *;q=0.7
+Connection: keep-alive
+Referer: http://foo.example/examples/access-control/simpleXSInvocation.html
+Origin: http://foo.example
+
+
+// response
+HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 00:23:52 GMT
+Server: Apache/2.0.61
+Access-Control-Allow-Origin: *
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Transfet-Encoding: chunked
+Content-Type: application/xml
+
+[XML Data]
+~~~
+
+- Origin 헤더는 해당 요청이 http://foo.example로부터 온 것을 알려준다.
+- Access-Control-Allow-Origin 헤더를 통해 접근 가능 범위를 설정할 수 있다. '*'를 사용하면 리소스가 cross-site 방식 내에서 모든 도메인으로부터 접근 가능하다는 것을 의미한다. 만약 http://bar.other에 있는 리소스의 소유자가 리소스에 대한 접근을 http://foo.example에게만 허용하길 바란다면, 다음과 같이 해야한다. 
+
+~~~
+Access-Control-Allow-Origin: http://foo.example
+~~~
+
+- 이렇게 선언하게 되면 http://foo.example외의 어떤 다른 도메인도 cross-site 방식으로 리소스에 접근할 수 없다. 
+- Access-Control-Allow-Origin 헤더는 요청의 Origin 헤더를 통해 전송되었던 값을 포함해야 한다. 
+
+## 9.2.2 사전 요청
+
+- preflighted 요청은 먼저, 실제 요청이 전송하기에 안전한지 아닌지를 결정하기 위해 다른 도메인에 있는 리소스에 OPTIONS 메서드로 HTTP 요청을 전송한다. 
+- Cross-site 요청은 사용자 데이터에 대한 함축적인 의미를 가지고 있기에 이와 같이 사전 전달된다. 
+    - GET, HEAD 혹은 POST 외의 메서드를 사용하는 경우, 또한 POST 메서드를 사용한 요청이 application/x-www-urlencoded, multipart/form-data, text/plain 이외의 다른 값을 가진 Content-Type과 함께 요청 데이터를 전송하는데 사용된 경우에도 그렇다. 
+    - 예를 들면, POST 요청이 서버에 application/xml 혹은 text/xml을 사용하여 XML 페이로드를 전송하게 되면 요청은 사전 전달된다. 
+    - 요청 내에 커스텀 헤더를 설정한 경우
+
+~~~
+var invocation = new XMLHttpRequest();
+var url = 'http://bar.other/resources/post-here/';
+var body = '<?xml version="1.0"?><person><name>Arun</name></person>';
+    
+function callOtherDomain(){
+  if(invocation)
+    {
+      invocation.open('POST', url, true);
+      invocation.setRequestHeader('X-PINGOTHER', 'pingpong');
+      invocation.setRequestHeader('Content-Type', 'application/xml');
+      invocation.onreadystatechange = handler;
+      invocation.send(body); 
+    }
+}
+
+......
+~~~
+
+~~~
+// preflight
+OPTIONS /resources/post-here/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://foo.example
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-PINGOTHER
+
+
+HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 01:15:39 GMT
+Server: Apache/2.0.61 (Unix)
+Access-Control-Allow-Origin: http://foo.example
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+Access-Control-Allow-Headers: X-PINGOTHER
+Access-Control-Max-Age: 1728000
+Vary: Accept-Encoding, Origin
+Content-Encoding: gzip
+Content-Length: 0
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Content-Type: text/plain
+
+POST /resources/post-here/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+X-PINGOTHER: pingpong
+Content-Type: text/xml; charset=UTF-8
+Referer: http://foo.example/examples/preflightInvocation.html
+Content-Length: 55
+Origin: http://foo.example
+Pragma: no-cache
+Cache-Control: no-cache
+
+<?xml version="1.0"?><person><name>Arun</name></person>
+
+
+HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 01:15:40 GMT
+Server: Apache/2.0.61 (Unix)
+Access-Control-Allow-Origin: http://foo.example
+Vary: Accept-Encoding, Origin
+Content-Encoding: gzip
+Content-Length: 235
+Keep-Alive: timeout=2, max=99
+Connection: Keep-Alive
+Content-Type: text/plain
+
+[Some GZIP'd payload]
+~~~
